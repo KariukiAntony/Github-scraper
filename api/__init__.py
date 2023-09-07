@@ -1,10 +1,8 @@
 from fastapi import FastAPI
-
+from api.github import user
 def create_app():
 
           app = FastAPI()
-          @app.get("/")
-          def index():
-                  return {"message": "Hello world"}
+          app.include_router(user)
 
           return app
