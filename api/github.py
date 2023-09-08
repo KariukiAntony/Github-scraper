@@ -17,12 +17,13 @@ def get_user_credentials(user: User):
           content = check_if_user_has_an_account(username)
           if content:
                   content_info = BeautifulSoup(content, "html.parser")
-                  avarter_image = get_avarter_image(content=content_info)
+                  avarter_image = get_Avatar_image(content=content_info)
                   username1 = get_user_github_username(content=content_info)
                   data_bio_text = get_bio_text(content=content_info)
-                  return {"avarter_image":avarter_image,
+                  return {"Avatar_image":avarter_image,
                            "profile_username": username1,
-                           "Bio": data_bio_text
+                           "Bio": data_bio_text,
+                           "followers": get_user_followers(content=content_info)
                            }, status.HTTP_200_OK
                   
 
@@ -37,12 +38,11 @@ def check_if_user_has_an_account(username: str):
         
         return False
 
-def get_avarter_image(content):
+def get_Avatar_image(content):
         avarter_image = content.find("div", class_="js-profile-editable-replace")
         avarter_image = avarter_image.find("a")
         src = avarter_image.find("img").get("src")
         alt = avarter_image.find("img").get("alt")
-        print({"src": src, "alt": alt} )
         return {"src": src, "alt": alt}
 
 def get_user_github_username(content):
@@ -62,3 +62,11 @@ def get_bio_text(content):
              return data_bio_text
         
         return None
+
+def get_user_followers(content):
+        followers = content.find("span", class_="text-bold color-fg-default")
+        if followers:
+                followers = followers.string
+                return int(followers)
+        
+        return 0
