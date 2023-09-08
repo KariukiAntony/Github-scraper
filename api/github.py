@@ -33,7 +33,8 @@ def get_user_credentials(user: User):
                            "Repositories": navbar[0],
                            "projects": navbar[1],
                            "packages": navbar[2],
-                           "stars": navbar[3]
+                           "stars": navbar[3],
+                           "contributions": user_number_of_contribution(content=content_info)
                            }, status.HTTP_200_OK
                   
 
@@ -122,3 +123,9 @@ def get_user_navbar_info(content):
        packages = repositories[2].text
        star_earned = repositories[3].text
        return [repos, projects, packages, star_earned]
+
+def user_number_of_contribution(content):
+       contrib = content.find("h2", class_="f4 text-normal mb-2")
+       answer = contrib.string
+       answer = answer[7: 12].replace("\n", "")
+       return answer+" contributions in the last year"
