@@ -23,7 +23,8 @@ def get_user_credentials(user: User):
                   return {"Avatar_image":avarter_image,
                            "profile_username": username1,
                            "Bio": data_bio_text,
-                           "followers": get_user_followers(content=content_info)
+                           "followers": get_user_followers(content=content_info),
+                           "following": get_number_of_user_following(content=content_info)
                            }, status.HTTP_200_OK
                   
 
@@ -67,6 +68,14 @@ def get_user_followers(content):
         followers = content.find("span", class_="text-bold color-fg-default")
         if followers:
                 followers = followers.string
-                return int(followers)
+                return followers
         
+        return 0
+
+def get_number_of_user_following(content):
+        following = content.find_all("span", class_="text-bold color-fg-default")[1]
+        if following:
+                following = following.string
+                return following
+                
         return 0
