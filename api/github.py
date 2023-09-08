@@ -24,7 +24,8 @@ def get_user_credentials(user: User):
                            "profile_username": username1,
                            "Bio": data_bio_text,
                            "followers": get_user_followers(content=content_info),
-                           "following": get_number_of_user_following(content=content_info)
+                           "following": get_number_of_user_following(content=content_info),
+                           "Geographic location": get_user_location(content=content_info)
                            }, status.HTTP_200_OK
                   
 
@@ -79,3 +80,11 @@ def get_number_of_user_following(content):
                 return following
                 
         return 0
+
+def get_user_location(content):
+        location = content.find("span", class_="p-label")
+        if location:
+                return location.text
+        
+        return None
+        
