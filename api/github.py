@@ -20,6 +20,8 @@ def get_user_credentials(user: User):
                   avarter_image = get_Avatar_image(content=content_info)
                   username1 = get_user_github_username(content=content_info)
                   data_bio_text = get_bio_text(content=content_info)
+                  navbar = get_user_navbar_info(content=content_info)
+                  print(navbar)
                   return {"Avatar_image":avarter_image,
                            "profile_username": username1,
                            "Bio": data_bio_text,
@@ -27,7 +29,11 @@ def get_user_credentials(user: User):
                            "following": get_number_of_user_following(content=content_info),
                            "location": get_user_location(content=content_info),
                            "organization": get_user_organization(content=content_info),
-                           "social_accounts": get_user_social_links(content=content_info)
+                           "social_accounts": get_user_social_links(content=content_info),
+                           "Repositories": navbar[0],
+                           "projects": navbar[1],
+                           "packages": navbar[2],
+                           "stars": navbar[3]
                            }, status.HTTP_200_OK
                   
 
@@ -108,3 +114,11 @@ def get_user_social_links(content):
               return socials
            
         return None
+
+def get_user_navbar_info(content):
+       repositories = content.find_all("span", class_="Counter")
+       repos = repositories[0].text
+       projects = repositories[1].text
+       packages = repositories[2].text
+       star_earned = repositories[3].text
+       return [repos, projects, packages, star_earned]
