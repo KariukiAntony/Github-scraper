@@ -26,7 +26,8 @@ def get_user_credentials(user: User):
                            "followers": get_user_followers(content=content_info),
                            "following": get_number_of_user_following(content=content_info),
                            "location": get_user_location(content=content_info),
-                           "organization": get_user_organization(content=content_info)
+                           "organization": get_user_organization(content=content_info),
+                           "social_accounts": get_user_social_links(content=content_info)
                            }, status.HTTP_200_OK
                   
 
@@ -94,4 +95,16 @@ def get_user_organization(content):
         if organization:
                 return  organization.text
         
+        return None
+
+def get_user_social_links(content):
+        socials = []
+        social_link = content.find("ul", class_="vcard-details")
+        social_links = social_link.find_all("li", class_="vcard-detail pt-1")
+        for link in social_links:
+           socials.append(link.find("a", class_="Link--primary").get("href"))
+
+        if len(socials) > 0:
+              return socials
+           
         return None
