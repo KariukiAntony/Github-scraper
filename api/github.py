@@ -6,12 +6,12 @@ from bs4 import BeautifulSoup
 user = APIRouter(tags=["GITHUB SCRAPER"])
 
 
-@user.get("/")
+@user.get("/", status_code=status.HTTP_200_OK)
 def index():
-        return {"message": "Hello world"}, status.HTTP_200_OK
+        return {"message": "Hello world"}
 
 
-@user.post("/username")
+@user.post("/username",status_code=status.HTTP_200_OK)
 def get_user_credentials(user: User):
           username = user.username
           content = check_if_user_has_an_account(username)
@@ -21,7 +21,6 @@ def get_user_credentials(user: User):
                   username1 = get_user_github_username(content=content_info)
                   data_bio_text = get_bio_text(content=content_info)
                   navbar = get_user_navbar_info(content=content_info)
-                  print(navbar)
                   return {"Avatar_image":avarter_image,
                            "profile_username": username1,
                            "Bio": data_bio_text,
