@@ -18,7 +18,10 @@ def get_user_credentials(user: User):
           if content:
                   content_info = BeautifulSoup(content, "html.parser")
                   avarter_image = get_avarter_image(content=content_info)
-                  return {"avarter_image":avarter_image }, status.HTTP_200_OK
+                  username1 = get_user_github_username(content=content_info)
+                  return {"avarter_image":avarter_image,
+                           "profileusername": username1
+                           }, status.HTTP_200_OK
                   
 
           return {"failed":f"user with username: {username} does not have a github account" }, status.HTTP_404_NOT_FOUND
@@ -39,3 +42,13 @@ def get_avarter_image(content):
         alt = avarter_image.find("img").get("alt")
         print({"src": src, "alt": alt} )
         return {"src": src, "alt": alt}
+
+def get_user_github_username(content):
+         profile_username = content.find("div", class_="js-profile-editable-replace")
+         username = profile_username.find("span", class_="p-name vcard-fullname d-block overflow-hidden").text.replace("  ", "")
+         username = profile_username.find("span", class_="p-name vcard-fullname d-block overflow-hidden").text.replace(" ", "")
+         username = username.replace("\n", "")
+         if username:
+            return username
+         
+         return None
