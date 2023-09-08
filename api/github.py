@@ -34,7 +34,8 @@ def get_user_credentials(user: User):
                            "projects": navbar[1],
                            "packages": navbar[2],
                            "stars": navbar[3],
-                           "contributions": user_number_of_contribution(content=content_info)
+                           "contributions": user_number_of_contribution(content=content_info),
+                           "Private contribution": get_user_private_contrib(content=content_info)
                            }, status.HTTP_200_OK
                   
 
@@ -129,3 +130,11 @@ def user_number_of_contribution(content):
        answer = contrib.string
        answer = answer[7: 12].replace("\n", "")
        return answer+" contributions in the last year"
+
+def get_user_private_contrib(content):
+       private = content.find("span",class_="f4 lh-condensed m-0 color-fg-muted")
+       if private:
+          private_text = private.text[13:15].replace("\n", "")
+          return private_text+ " contributions in private repositories"
+
+       return None
