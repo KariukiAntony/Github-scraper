@@ -19,8 +19,10 @@ def get_user_credentials(user: User):
                   content_info = BeautifulSoup(content, "html.parser")
                   avarter_image = get_avarter_image(content=content_info)
                   username1 = get_user_github_username(content=content_info)
+                  data_bio_text = get_bio_text(content=content_info)
                   return {"avarter_image":avarter_image,
-                           "profile_username": username1
+                           "profile_username": username1,
+                           "Bio": data_bio_text
                            }, status.HTTP_200_OK
                   
 
@@ -52,3 +54,11 @@ def get_user_github_username(content):
             return username
          
          return None
+
+def get_bio_text(content):
+        data_bio_text = content.find("div", class_="p-note user-profile-bio mb-3 js-user-profile-bio f4")
+        if data_bio_text:
+             data_bio_text = data_bio_text.get("data-bio-text")
+             return data_bio_text
+        
+        return None
