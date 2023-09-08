@@ -20,7 +20,7 @@ def get_user_credentials(user: User):
                   avarter_image = get_avarter_image(content=content_info)
                   username1 = get_user_github_username(content=content_info)
                   return {"avarter_image":avarter_image,
-                           "profileusername": username1
+                           "profile_username": username1
                            }, status.HTTP_200_OK
                   
 
